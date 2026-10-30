@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjali Enterprises - Billing Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .icon { width: 1.1em; height: 1.1em; flex-shrink: 0; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; font-weight: 600; border-radius: .5rem; transition: background .15s, transform .15s; }
+        .btn:focus-visible, input:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            .print-border { border: none !important; box-shadow: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-6 font-sans">
+
+<div class="max-w-6xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="bg-white p-6 rounded-lg shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center border border-gray-200 print-border">
+        <div>
+            <h1 class="text-3xl font-extrabold text-blue-800 tracking-tight">ANJALI ENTERPRISES</h1>
+            <p class="text-sm font-semibold text-gray-600 mt-1">Electrical Supply Store | Prop. Mahendra Choudhary (9022596284)</p>
+            <p class="text-xs text-gray-500 mt-1">Shop No.6, Achole Ashok Nagar, Opp Dwarka Hotel, Nallasopara (E), Maharashtra 401209</p>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-4 md:mt-0 no-print">
+            <button type="button" data-action="new" class="btn bg-red-50 hover:bg-red-100 text-red-600 py-2 px-4 border border-red-200"><span data-icon="plus"></span>New Bill</button>
+            <button type="button" data-action="print" class="btn bg-blue-50 hover:bg-blue-100 text-blue-800 py-2 px-4 border border-blue-200"><span data-icon="printer"></span>Print</button>
+        </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 no-print" id="summary"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Invoice form -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-gray-200 print-border">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-lg font-semibold text-gray-800" id="formTitle">Create New Invoice</h2>
+                <span id="editBadge" class="hidden bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-1 rounded">Editing Mode</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label for="custName" class="block text-sm font-medium text-gray-700">Customer Name</label>
+                    <input type="text" id="custName" maxlength="80" class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 shadow-sm" placeholder="Enter Customer Name">
+                </div>
+                <div>
+                    <label for="custPhone" class="block text-sm font-medium text-gray-700">WhatsApp Number</label>
+                    <input type="tel" inputmode="numeric" id="custPhone" maxlength="10" class="mt-1 block w-full rounded-md border-gray-300 border p-2.5 shadow-sm" placeholder="10-digit number">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse mb-4">
+                    <thead>
+                        <tr class="bg-blue-50 text-blue-900 text-sm border-b-2 border-blue-200">
+                            <th class="p-3">Item Name</th>
+                            <th class="p-3 w-24">Qty</th>
+                            <th class="p-3 w-32">Price (₹)</th>
+                            <th class="p-3 w-32">Total (₹)</th>
+                            <th class="p-3 w-12 text-center no-print"><span class="sr-only">Remove</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsBody"></tbody>
+                </table>
+            </div>
+            <datalist id="itemSuggestions"></datalist>
+            <button type="button" data-action="add-row" class="btn text-blue-600 text-sm hover:underline no-print"><span data-icon="plus"></span>Add Another Item</button>
+        </div>
+
+        <!-- Payment -->
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 print-border flex flex-col justify-between">
+            <div>
+                <h2 class="text-lg font-semibold mb-4 border-b pb-2 text-gray-800">Payment Summary</h2>
+                <div class="flex justify-between items-center mb-3 text-sm">
+                    <span class="text-gray-600 font-medium">Subtotal:</span>
+                    <span class="font-semibold text-gray-800 text-lg" id="subTotalAmt">₹0.00</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-4 mt-2 no-print">
+                    <div>
+                        <label for="discountPct" class="block text-sm font-medium text-gray-700">Discount (%)</label>
+                        <input type="number" id="discountPct" class="mt-1 block w-full rounded-md border-gray-300 border p-2" value="0" min="0" max="100" step="any">
+                    </div>
+                    <div>
+                        <label for="gstPct" class="block text-sm font-medium text-gray-700">GST (%)</label>
+                        <input type="number" id="gstPct" class="mt-1 block w-full rounded-md border-gray-300 border p-2" value="0" min="0" max="100" step="any">
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mb-2 text-sm text-green-600">
+                    <span class="font-medium">Discount Amount:</span>
+                    <span id="discountAmtDisplay" class="font-bold">-₹0.00</span>
+                </div>
+                <div class="flex justify-between items-center mb-4 text-sm text-red-500">
+                    <span class="font-medium">GST Amount:</span>
+                    <span id="gstAmtDisplay" class="font-bold">+₹0.00</span>
+                </div>
+
+                <div class="flex justify-between items-center mb-4 pt-4 border-t-2 border-gray-200">
+                    <span class="text-gray-800 font-extrabold text-lg">Grand Total:</span>
+                    <span class="text-3xl font-extrabold text-blue-700" id="grandTotal">₹0.00</span>
+                </div>
+
+                <div class="mb-4 mt-6 no-print">
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="amtReceived" class="block text-sm font-bold text-gray-700">Amount Received (₹)</label>
+                        <button type="button" data-action="full-paid" class="text-xs font-bold text-green-700 hover:underline">Full amount</button>
+                    </div>
+                    <input type="number" id="amtReceived" class="block w-full rounded-md border-green-500 border-2 p-3 text-lg font-bold" value="0" min="0" step="any">
+                </div>
+
+                <div class="flex justify-between items-center mb-6 pt-4 border-t border-gray-200">
+                    <span class="text-gray-700 font-bold">Pending Balance:</span>
+                    <span class="text-xl font-extrabold text-red-600" id="pendingAmt">₹0.00</span>
+                </div>
+            </div>
+
+            <div class="space-y-3 no-print">
+                <button type="button" data-action="save-send" class="btn w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 shadow-sm"><span data-icon="whatsapp"></span>Save &amp; WhatsApp Bill</button>
+                <button type="button" data-action="save" class="btn w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 shadow-sm"><span data-icon="save"></span>Save to History</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History -->
+    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 no-print">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 border-b pb-3">
+            <h2 class="text-xl font-bold text-gray-800">Recent Bills &amp; Pending Payments</h2>
+            <div class="flex flex-wrap gap-2 items-center">
+                <input type="search" id="historySearch" class="border border-gray-300 rounded-md p-2 text-sm" placeholder="Search name / phone / bill no.">
+                <label class="flex items-center gap-1 text-sm text-gray-700"><input type="checkbox" id="pendingOnly"> Pending only</label>
+                <button type="button" data-action="export-csv" class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 px-3 border border-gray-300"><span data-icon="download"></span>CSV</button>
+                <button type="button" data-action="backup" class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 px-3 border border-gray-300"><span data-icon="download"></span>Backup</button>
+                <button type="button" data-action="restore" class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 px-3 border border-gray-300"><span data-icon="upload"></span>Restore</button>
+                <input type="file" id="restoreFile" accept="application/json" class="hidden">
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-sm text-gray-700 uppercase tracking-wide border-b-2 border-gray-200">
+                        <th class="p-3">Bill No.</th>
+                        <th class="p-3">Date</th>
+                        <th class="p-3">Customer</th>
+                        <th class="p-3">Total (₹)</th>
+                        <th class="p-3">Pending (₹)</th>
+                        <th class="p-3 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody" class="text-sm"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="no-print fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-4 py-2 rounded-lg shadow-lg hidden" role="status"></div>
+
+<script>
+    const STORAGE_KEY = 'wholesaleBills';
+    const COUNTER_KEY = 'wholesaleBillCounter';
+
+    // Stroke-based icon paths (24x24 viewBox)
+    const ICONS = {
+        plus: '<path d="M12 5v14M5 12h14"/>',
+        printer: '<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/>',
+        save: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8"/>',
+        download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+        upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+        check: '<path d="M20 6 9 17l-5-5"/>',
+        edit: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+        trash: '<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/>',
+        close: '<path d="M18 6 6 18M6 6l12 12"/>',
+        whatsapp: '<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"/>',
+        send: '<path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/>'
+    };
+
+    const state = { editingBillId: null, totals: { sub: 0, discount: 0, gst: 0, grand: 0 } };
+    const $ = (id) => document.getElementById(id);
+
+    const icon = (name) =>
+        `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
+
+    const escapeHtml = (value) =>
+        String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
+    const money = (n) => '₹' + Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const num = (value) => { const n = parseFloat(value); return Number.isFinite(n) ? n : 0; };
+    const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
+
+    function readBills() {
+        try {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            return Array.isArray(data) ? data : [];
+        } catch (err) {
+            console.error('Could not read saved bills:', err);
+            return [];
+        }
+    }
+
+    function writeBills(bills) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(bills));
+            return true;
+        } catch (err) {
+            console.error('Could not save bills:', err);
+            toast('Save failed: browser storage is full or blocked.');
+            return false;
+        }
+    }
+
+    function nextBillNo() {
+        const bills = readBills();
+        const highest = bills.reduce((max, b) => Math.max(max, Number(b.billNo) || 0), 0);
+        const counter = Math.max(highest, parseInt(localStorage.getItem(COUNTER_KEY), 10) || 0) + 1;
+        try { localStorage.setItem(COUNTER_KEY, String(counter)); } catch (_) { /* non-critical */ }
+        return counter;
+    }
+
+    let toastTimer;
+    function toast(message) {
+        const el = $('toast');
+        el.textContent = message;
+        el.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.add('hidden'), 2800);
+    }
+
+    function hydrateIcons(root = document) {
+        root.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = icon(el.dataset.icon); el.style.display = 'inline-flex'; });
+    }
+
+    // ---------- Invoice rows ----------
+    function addRow(name = '', qty = 1, price = 0) {
+        const tr = document.createElement('tr');
+        tr.className = 'item-row border-b border-gray-100 hover:bg-gray-50 transition';
+        tr.innerHTML = `
+            <td class="p-2"><input type="text" list="itemSuggestions" maxlength="120" class="w-full p-2 border border-gray-300 rounded item-name" placeholder="E.g. Milan Wire / Cello Tape"></td>
+            <td class="p-2"><input type="number" class="w-full p-2 border border-gray-300 rounded item-qty" min="1" step="any"></td>
+            <td class="p-2"><input type="number" class="w-full p-2 border border-gray-300 rounded item-price" min="0" step="any"></td>
+            <td class="p-2 font-bold text-gray-800 item-total">0.00</td>
+            <td class="p-2 text-center no-print">
+                <button type="button" data-action="remove-row" aria-label="Remove item" title="Remove item" class="btn text-red-500 hover:bg-red-100 p-2">${icon('close')}</button>
+            </td>`;
+        // Values are set as properties, never interpolated into HTML (prevents XSS from saved data)
+        tr.querySelector('.item-name').value = name;
+        tr.querySelector('.item-qty').value = qty;
+        tr.querySelector('.item-price').value = price;
+        $('itemsBody').appendChild(tr);
+        calculate();
+    }
+
+    function removeRow(button) {
+        if (document.querySelectorAll('.item-row').length <= 1) {
+            toast('Kam se kam 1 item hona zaruri hai.');
+            return;
+        }
+        button.closest('tr').remove();
+        calculate();
+    }
+
+    function calculate() {
+        let sub = 0;
+        document.querySelectorAll('.item-row').forEach((row) => {
+            const qty = Math.max(num(row.querySelector('.item-qty').value), 0);
+            const price = Math.max(num(row.querySelector('.item-price').value), 0);
+            const rowTotal = round2(qty * price);
+            row.querySelector('.item-total').textContent = rowTotal.toFixed(2);
+            sub += rowTotal;
+        });
+
+        const discountPct = clamp(num($('discountPct').value), 0, 100);
+        const gstPct = clamp(num($('gstPct').value), 0, 100);
+        const discount = round2(sub * discountPct / 100);
+        const afterDiscount = sub - discount;
+        const gst = round2(afterDiscount * gstPct / 100);
+        const grand = round2(afterDiscount + gst);
+        const received = Math.max(num($('amtReceived').value), 0);
+        const pending = Math.max(round2(grand - received), 0);
+
+        state.totals = { sub: round2(sub), discount, gst, grand };
+
+        $('subTotalAmt').textContent = money(sub);
+        $('discountAmtDisplay').textContent = '-' + money(discount);
+        $('gstAmtDisplay').textContent = '+' + money(gst);
+        $('grandTotal').textContent = money(grand);
+        $('pendingAmt').textContent = money(pending);
+    }
+
+    function updateItemSuggestions() {
+        const names = new Set();
+        readBills().forEach((b) => (b.items || []).forEach((i) => i.name && names.add(i.name)));
+        const list = $('itemSuggestions');
+        list.innerHTML = '';
+        names.forEach((n) => { const o = document.createElement('option'); o.value = n; list.appendChild(o); });
+    }
+
+    function clearForm() {
+        state.editingBillId = null;
+        $('formTitle').textContent = 'Create New Invoice';
+        $('editBadge').classList.add('hidden');
+        $('custName').value = '';
+        $('custPhone').value = '';
+        $('discountPct').value = '0';
+        $('gstPct').value = '0';
+        $('amtReceived').value = '0';
+        $('itemsBody').innerHTML = '';
+        addRow();
+    }
+
+    // ---------- Saving ----------
+    function collectBill() {
+        const name = $('custName').value.trim() || 'Walk-in';
+        const phone = $('custPhone').value.replace(/\D/g, '');
+        const items = [];
+
+        document.querySelectorAll('.item-row').forEach((row, index) => {
+            const qty = num(row.querySelector('.item-qty').value);
+            const price = num(row.querySelector('.item-price').value);
+            const total = round2(qty * price);
+            if (total > 0) {
+                items.push({ name: row.querySelector('.item-name').value.trim() || `Item ${index + 1}`, qty, price, total });
+            }
+        });
+
+        const received = Math.max(num($('amtReceived').value), 0);
+        const { grand } = state.totals;
+        return {
+            name, phone, items,
+            discountPct: clamp(num($('discountPct').value), 0, 100),
+            gstPct: clamp(num($('gstPct').value), 0, 100),
+            subTotal: state.totals.sub,
+            discountAmt: state.totals.discount,
+            gstAmt: state.totals.gst,
+            total: grand,
+            received,
+            pending: Math.max(round2(grand - received), 0)
+        };
+    }
+
+    function validateBill(bill, { requirePhone }) {
+        if (bill.items.length === 0) return 'Kam se kam 1 item (price ke saath) add karein.';
+        if (requirePhone && !/^[6-9]\d{9}$/.test(bill.phone)) return 'Sahi 10-digit WhatsApp number enter karein.';
+        if (bill.phone && !/^[6-9]\d{9}$/.test(bill.phone)) return 'WhatsApp number galat hai (10 digit hona chahiye).';
+        return null;
+    }
+
+    function persistBill(bill) {
+        const bills = readBills();
+        const existingIndex = state.editingBillId ? bills.findIndex((b) => b.id === state.editingBillId) : -1;
+
+        if (existingIndex > -1) {
+            const old = bills[existingIndex];
+            bills[existingIndex] = { ...bill, id: old.id, billNo: old.billNo, date: old.date, createdAt: old.createdAt };
+        } else {
+            bills.unshift({ ...bill, id: Date.now(), billNo: nextBillNo(), date: new Date().toLocaleDateString('en-IN'), createdAt: new Date().toISOString() });
+        }
+        if (!writeBills(bills)) return null;
+        return existingIndex > -1 ? bills[existingIndex] : bills[0];
+    }
+
+    function buildWhatsAppMessage(bill) {
+        const line = '------------------------------';
+        let msg = `*🧾 ANJALI ENTERPRISES*\n_Electrical Supply Store_\n📍 Shop no.6, Achole Ashok Nagar, Nallasopara (E)\n📞 Mob: 9022596284 (Mahendra Choudhary)\n${line}\n*INVOICE #${bill.billNo}*\n👤 *Customer:* ${bill.name}\n📅 *Date:* ${bill.date}\n${line}\n*ITEMS:*\n`;
+        bill.items.forEach((i) => { msg += `▪️ ${i.name}\n   ${i.qty} x ₹${i.price.toFixed(2)} = *₹${i.total.toFixed(2)}*\n`; });
+        msg += `${line}\n*Subtotal:* ₹${bill.subTotal.toFixed(2)}\n`;
+        if (bill.discountAmt > 0) msg += `*Discount (${bill.discountPct}%):* -₹${bill.discountAmt.toFixed(2)}\n`;
+        if (bill.gstAmt > 0) msg += `*GST (${bill.gstPct}%):* +₹${bill.gstAmt.toFixed(2)}\n`;
+        msg += `${line}\n💰 *Grand Total: ₹${bill.total.toFixed(2)}*\n💵 *Amount Paid: ₹${bill.received.toFixed(2)}*\n📉 *Pending Balance: ₹${bill.pending.toFixed(2)}*\n${line}\n_Thank you for visiting Anjali Enterprises!_ 🙏`;
+        return msg;
+    }
+
+    function sendWhatsApp(bill) {
+        if (!bill.phone) { toast('Is bill me WhatsApp number nahi hai.'); return; }
+        const url = `https://wa.me/91${bill.phone}?text=${encodeURIComponent(buildWhatsAppMessage(bill))}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    function saveBill({ send }) {
+        calculate();
+        const bill = collectBill();
+        const error = validateBill(bill, { requirePhone: send });
+        if (error) { toast(error); return; }
+
+        const wasEditing = Boolean(state.editingBillId);
+        const saved = persistBill(bill);
+        if (!saved) return;
+
+        refreshHistory();
+        if (send) sendWhatsApp(saved);
+        toast(wasEditing ? 'Bill updated successfully!' : `Bill #${saved.billNo} saved successfully!`);
+        clearForm();
+    }
+
+    // ---------- History ----------
+    function refreshHistory() {
+        renderSummary();
+        renderHistory();
+        updateItemSuggestions();
+    }
+
+    function renderSummary() {
+        const bills = readBills();
+        const today = new Date().toLocaleDateString('en-IN');
+        const todaySales = bills.filter((b) => b.date === today).reduce((s, b) => s + Number(b.total), 0);
+        const totalPending = bills.reduce((s, b) => s + Number(b.pending), 0);
+        const pendingCount = bills.filter((b) => Number(b.pending) > 0).length;
+        const cards = [
+            ['Total Bills', bills.length, 'text-gray-800'],
+            ["Today's Sales", money(todaySales), 'text-blue-700'],
+            ['Total Pending', money(totalPending), 'text-red-600'],
+            ['Pending Bills', pendingCount, 'text-red-600']
+        ];
+        $('summary').innerHTML = cards.map(([label, value, color]) =>
+            `<div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm"><p class="text-xs uppercase tracking-wide text-gray-500">${label}</p><p class="text-2xl font-extrabold ${color}">${escapeHtml(value)}</p></div>`
+        ).join('');
+    }
+
+    function renderHistory() {
+        const query = $('historySearch').value.trim().toLowerCase();
+        const pendingOnly = $('pendingOnly').checked;
+        const bills = readBills().filter((b) => {
+            if (pendingOnly && !(Number(b.pending) > 0)) return false;
+            if (!query) return true;
+            return [b.name, b.phone, b.billNo].some((v) => String(v ?? '').toLowerCase().includes(query));
+        });
+
+        const body = $('historyBody');
+        if (bills.length === 0) {
+            body.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-gray-500">Koi bill nahi mila.</td></tr>';
+            return;
+        }
+
+        const actionBtn = (action, id, iconName, label, color) =>
+            `<button type="button" data-action="${action}" data-id="${id}" title="${label}" aria-label="${label}" class="btn p-2 ${color} border border-gray-200 hover:bg-gray-100">${icon(iconName)}</button>`;
+
+        body.innerHTML = bills.map((b) => {
+            const pending = Number(b.pending);
+            const id = Number(b.id);
+            return `
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="p-3 text-gray-600">#${escapeHtml(b.billNo ?? '-')}</td>
+                <td class="p-3 text-gray-600">${escapeHtml(b.date)}</td>
+                <td class="p-3 font-semibold text-gray-800">${escapeHtml(b.name)}${b.phone ? `<div class="text-xs font-normal text-gray-500">${escapeHtml(b.phone)}</div>` : ''}</td>
+                <td class="p-3 font-bold text-gray-700">${money(b.total)}</td>
+                <td class="p-3 ${pending > 0 ? 'text-red-600 font-extrabold' : 'text-green-600 font-bold'}">${money(pending)}</td>
+                <td class="p-3"><div class="flex justify-center gap-2 flex-wrap">
+                    ${pending > 0
+                        ? actionBtn('mark-paid', id, 'check', 'Mark as paid', 'text-green-600')
+                        : '<span class="text-green-700 text-xs font-bold bg-green-100 px-2 py-2 rounded">Paid</span>'}
+                    ${b.phone ? actionBtn('resend', id, 'send', 'Send on WhatsApp', 'text-green-600') : ''}
+                    ${actionBtn('edit', id, 'edit', 'Edit bill', 'text-blue-600')}
+                    ${actionBtn('delete', id, 'trash', 'Delete bill', 'text-red-500')}
+                </div></td>
+            </tr>`;
+        }).join('');
+    }
+
+    function findBill(id) {
+        return readBills().find((b) => b.id === id);
+    }
+
+    function editBill(id) {
+        const bill = findBill(id);
+        if (!bill) return;
+
+        state.editingBillId = bill.id;
+        $('formTitle').textContent = `Editing Invoice #${bill.billNo ?? ''}: ${bill.name}`;
+        $('editBadge').classList.remove('hidden');
+        $('custName').value = bill.name;
+        $('custPhone').value = bill.phone || '';
+        $('discountPct').value = bill.discountPct || 0;
+        $('gstPct').value = bill.gstPct || 0;
+        $('amtReceived').value = bill.received;
+
+        $('itemsBody').innerHTML = '';
+        if (bill.items && bill.items.length) bill.items.forEach((i) => addRow(i.name, i.qty, i.price));
+        else addRow();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteBill(id) {
+        if (!confirm('Kya aap sach mein is bill ko delete karna chahte hain?')) return;
+        if (!writeBills(readBills().filter((b) => b.id !== id))) return;
+        if (state.editingBillId === id) clearForm();
+        refreshHistory();
+        toast('Bill delete ho gaya.');
+    }
+
+    function markAsPaid(id) {
+        if (!confirm('Kya is bill ka poora payment mil gaya hai?')) return;
+        const bills = readBills();
+        const bill = bills.find((b) => b.id === id);
+        if (!bill) return;
+        bill.received = bill.total;
+        bill.pending = 0;
+        if (writeBills(bills)) { refreshHistory(); toast('Payment complete mark ho gaya.'); }
+    }
+
+    // ---------- Backup / export ----------
+    function downloadFile(filename, content, mime) {
+        const url = URL.createObjectURL(new Blob([content], { type: mime }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    const stamp = () => new Date().toISOString().slice(0, 10);
+
+    function exportBackup() {
+        downloadFile(`anjali-backup-${stamp()}.json`, JSON.stringify(readBills(), null, 2), 'application/json');
+    }
+
+    function exportCsv() {
+        const bills = readBills();
+        if (!bills.length) { toast('Export karne ke liye koi bill nahi hai.'); return; }
+        // Prefix formula-trigger characters so spreadsheets don't execute customer-entered text
+        const cell = (v) => {
+            let s = String(v ?? '');
+            if (/^[=+\-@]/.test(s)) s = "'" + s;
+            return `"${s.replace(/"/g, '""')}"`;
+        };
+        const rows = [['Bill No', 'Date', 'Customer', 'Phone', 'Total', 'Received', 'Pending']];
+        bills.forEach((b) => rows.push([b.billNo, b.date, b.name, b.phone, b.total, b.received, b.pending]));
+        downloadFile(`anjali-bills-${stamp()}.csv`, rows.map((r) => r.map(cell).join(',')).join('\n'), 'text/csv;charset=utf-8');
+    }
+
+    function importBackup(file) {
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) { toast('File bahut badi hai.'); return; }
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const data = JSON.parse(reader.result);
+                if (!Array.isArray(data) || !data.every((b) => b && typeof b === 'object' && 'id' in b && 'name' in b && 'total' in b)) {
+                    throw new Error('Invalid backup format');
+                }
+                if (!confirm(`${data.length} bills restore honge. Current data replace ho jayega. Continue?`)) return;
+                if (writeBills(data)) { refreshHistory(); toast('Backup restore ho gaya.'); }
+            } catch (err) {
+                console.error(err);
+                toast('Backup file sahi nahi hai.');
+            }
+        };
+        reader.onerror = () => toast('File read nahi ho payi.');
+        reader.readAsText(file);
+    }
+
+    // ---------- Event wiring ----------
+    document.addEventListener('click', (event) => {
+        const target = event.target.closest('[data-action]');
+        if (!target) return;
+        const id = Number(target.dataset.id);
+
+        switch (target.dataset.action) {
+            case 'new': clearForm(); break;
+            case 'print': window.print(); break;
+            case 'add-row': addRow(); break;
+            case 'remove-row': removeRow(target); break;
+            case 'full-paid': calculate(); $('amtReceived').value = state.totals.grand; calculate(); break;
+            case 'save-send': saveBill({ send: true }); break;
+            case 'save': saveBill({ send: false }); break;
+            case 'mark-paid': markAsPaid(id); break;
+            case 'resend': { const b = findBill(id); if (b) sendWhatsApp(b); break; }
+            case 'edit': editBill(id); break;
+            case 'delete': deleteBill(id); break;
+            case 'export-csv': exportCsv(); break;
+            case 'backup': exportBackup(); break;
+            case 'restore': $('restoreFile').click(); break;
+        }
+    });
+
+    document.addEventListener('input', (event) => {
+        const el = event.target;
+        if (el.matches('.item-qty, .item-price, #discountPct, #gstPct, #amtReceived')) calculate();
+        if (el.id === 'custPhone') el.value = el.value.replace(/\D/g, '').slice(0, 10);
+        if (el.id === 'historySearch') renderHistory();
+    });
+
+    $('pendingOnly').addEventListener('change', renderHistory);
+    $('restoreFile').addEventListener('change', (e) => { importBackup(e.target.files[0]); e.target.value = ''; });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        hydrateIcons();
+        addRow();
+        refreshHistory();
+    });
+</script>
+</body>
+</html>
