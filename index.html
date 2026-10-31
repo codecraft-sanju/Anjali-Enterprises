@@ -17,6 +17,8 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 @media print{@page{size:A4;margin:13mm}html,body{background:white!important;color:#101827!important;font-size:11px!important}.shell,.bottom-nav,.toast,dialog,.help-fab,.onboard-backdrop,.tour-tip,.tour-dim{display:none!important}.print-sheet{display:block!important;font-family:Arial,sans-serif;color:#111827}.print-top{display:flex;justify-content:space-between;border-bottom:2px solid #334155;padding-bottom:18px}.print-company{font-size:24px;font-weight:900;margin-bottom:5px}.print-company-details{font-size:11px;line-height:1.55;color:#475569}.print-title{text-align:right}.print-title strong{font-size:19px;display:block}.print-title span{display:block;margin-top:5px;color:#475569}.print-client{display:flex;justify-content:space-between;gap:20px;padding:22px 0}.print-small-title{font-weight:900;color:#64748b;text-transform:uppercase;font-size:10px;letter-spacing:1px;margin-bottom:5px}.print-client strong{font-size:13px}.print-table{width:100%;border-collapse:collapse;margin-top:5px}.print-table th{background:#f1f5f9;text-align:left;padding:11px 9px;border-bottom:1px solid #cbd5e1}.print-table td{padding:11px 9px;border-bottom:1px solid #e2e8f0;vertical-align:top}.print-right{text-align:right!important}.print-totals{width:270px;max-width:100%;margin:20px 0 0 auto}.print-totals .pr{display:flex;justify-content:space-between;padding:6px 0;gap:15px}.print-totals .pr.grand{font-size:15px;font-weight:900;border-top:2px solid #94a3b8;border-bottom:1px solid #cbd5e1;padding:10px 0;margin-top:8px}.print-notes{padding:20px 0;max-width:500px;white-space:pre-wrap;overflow-wrap:anywhere}.print-footer{border-top:1px solid #cbd5e1;padding-top:15px;margin-top:48px;text-align:center;font-size:10px;color:#64748b}.print-table tr{break-inside:avoid}}
 </style>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 <div class="shell">
@@ -111,6 +113,16 @@ document.addEventListener('input',ev=>{const el=ev.target;if(el.id==='customerPh
 $('paymentForm').addEventListener('submit',recordPayment);$('restoreFile').addEventListener('change',ev=>{restore(ev.target.files[0]);ev.target.value='';});$('paymentDialog').addEventListener('close',()=>state.paymentId=null);window.addEventListener('storage',ev=>{if([STORAGE_KEY,COUNTER_KEY].includes(ev.key)){refreshAll();notify('Records updated in another tab.');}});window.addEventListener('resize',()=>{if(state.tourActive){const step=tour[state.tourIndex],target=getTourTarget(step);if(target)positionTourTip(target);}});document.addEventListener('keydown',ev=>{if(ev.key==='Escape'){if(!$('onboard').classList.contains('hidden'))closeOnboarding();else if(state.tourActive)exitTour();}});
 function init(){hydrateIcons();$('footerYear').textContent=new Date().getFullYear();document.querySelectorAll('.today-label').forEach(el=>el.textContent=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}));resetInvoice();refreshAll();showView('dashboard');try{if(localStorage.getItem(ONBOARD_KEY)!=='complete')openOnboarding();}catch(e){openOnboarding();}}
 init();
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(res => console.log("Service worker ready!"))
+        .catch(err => console.log("SW error", err));
+    });
+  }
 </script>
 </body>
 </html>
