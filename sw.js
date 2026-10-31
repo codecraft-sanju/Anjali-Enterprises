@@ -1,3 +1,4 @@
+//sw.js
 const CACHE_NAME = "ae-billing-v1";
 const assets = [
   "./",
