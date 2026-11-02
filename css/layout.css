@@ -1,0 +1,229 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid rgba(221, 226, 239, 0.85);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+.top-inner {
+  max-width: 1390px;
+  margin: auto;
+  height: 80px;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 265px;
+}
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #7776fb, #4542bd);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-family: Manrope;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  box-shadow: 0 8px 18px #5855e832;
+}
+.brand-name {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.55px;
+}
+.brand-sub {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--subtle);
+  margin-top: 2px;
+}
+.tabs {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.tab {
+  border: 0;
+  background: transparent;
+  color: #728097;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 15px;
+  border-radius: 12px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.tab:hover {
+  background: #f4f5fa;
+  color: var(--ink);
+}
+.tab.active {
+  background: var(--pale);
+  color: var(--primary);
+}
+.right-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: auto;
+}
+.device {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--secondary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.dot {
+  width: 7px;
+  height: 7px;
+  background: #15b886;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #15b88618;
+}
+.btn {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 15px;
+  min-height: 44px;
+  font-weight: 800;
+  white-space: nowrap;
+  transition:
+    transform 0.22s var(--ease),
+    background 0.18s,
+    border-color 0.18s,
+    box-shadow 0.2s;
+  text-decoration: none;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.primary {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 8px 17px #5855e827;
+}
+.primary:hover {
+  background: #4743d9;
+  box-shadow: 0 12px 24px #5855e83b;
+}
+.secondary {
+  background: white;
+  color: #3b4861;
+  border-color: #e0e4ee;
+}
+.secondary:hover {
+  background: #f8f9fd;
+}
+.success {
+  background: #0e8c70;
+  color: white;
+}
+.success:hover {
+  background: #087b62;
+}
+.soft {
+  background: var(--pale);
+  color: var(--primary);
+}
+.danger {
+  color: var(--rose);
+  background: var(--rose-bg);
+}
+.btn-sm {
+  min-height: 37px;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+.btn .icon {
+  width: 17px;
+  height: 17px;
+}
+.main {
+  width: 100%;
+  max-width: 1390px;
+  margin: 0 auto;
+  padding: 35px 30px 75px;
+  flex: 1;
+}
+.screen {
+  display: none;
+}
+.screen.active {
+  display: block;
+  animation: rise 0.48s var(--ease) both;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 27px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.7px;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  margin-bottom: 9px;
+}
+.head-desc {
+  color: var(--secondary);
+  font-size: 13px;
+}
+.head-tools {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.date-pill,
+.range-select {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #65728a;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.range-select {
+  min-height: 40px;
+}
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+.pad {
+  padding: 24px;
+}

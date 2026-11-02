@@ -1,0 +1,42 @@
+              <div
+                class="wizard-page"
+                data-step="1"
+                hidden=""
+                id="itemsSection"
+              >
+                <div class="step-section-head heading-with-chip">
+                  <div>
+                    <span class="step-eyebrow">STEP 02 / LINE ITEMS</span>
+                    <h2>What are you selling?</h2>
+                    <p>
+                      Add the electrical products, quantities, rates and
+                      applicable item-wise GST.
+                    </p>
+                  </div>
+                  <span class="count" id="itemCount">1 item</span>
+                </div>
+                <div class="items-head">
+                  <span>Item name</span><span>Qty</span><span>Price (₹)</span
+                  ><span>GST (%)</span><span class="text-right">Amount</span
+                  ><span></span>
+                </div>
+                <div id="itemRows"></div>
+                <datalist id="itemSuggestions"></datalist>
+                <button class="add-line" data-action="add-row" type="button">
+                  <span data-icon="plus"></span>Add another product
+                </button>
+                <div class="field notes-field">
+                  <label for="invoiceNotes"
+                    >Bill notes <span class="optional">Optional</span></label
+                  ><textarea
+                    id="invoiceNotes"
+                    maxlength="500"
+                    placeholder="e.g. Delivery on Monday · Warranty information · Special instructions..."
+                    rows="3"
+                  ></textarea>
+                  <p class="hint">
+                    These notes will also appear in the WhatsApp invoice and
+                    printed bill.
+                  </p>
+                </div>
+              </div>

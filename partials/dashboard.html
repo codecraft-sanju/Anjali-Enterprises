@@ -1,0 +1,53 @@
+        <section class="screen active" id="screen-dashboard">
+          <div class="head">
+            <div>
+              <div class="eyebrow">STORE OVERVIEW</div>
+              <h1>Good to see you again.</h1>
+              <p class="head-desc">
+                Everything you need to keep your counter running smoothly.
+              </p>
+            </div>
+            <div class="head-tools">
+              <select
+                aria-label="Date range"
+                class="range-select"
+                data-range="dash"
+              ></select>
+              <div class="date-pill">
+                <span data-icon="calendar"></span
+                ><span class="today-label"></span>
+              </div>
+            </div>
+          </div>
+          <div class="stats" id="statsGrid"></div>
+          <div class="dashboard-grid">
+            <div>
+              <div class="hero">
+                <div class="hero-kicker">YOUR BILLING WORKSPACE</div>
+                <h2>Beautifully simple.<br />Ready for every sale.</h2>
+                <p>
+                  Create precise invoices with item-wise or bill-wise GST, track
+                  partial payments, and share bill details.
+                </p>
+                <button class="btn" data-action="new">
+                  <span data-icon="plus"></span>Create an invoice
+                </button>
+              </div>
+              <div class="helper">
+                <div class="card">
+                  <p class="hint">
+                    Invoices are saved in this browser (IndexedDB). Export a
+                    JSON backup regularly from Bill History.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card pad">
+              <div class="card-title">
+                <h2>Recent invoices</h2>
+                <button class="link-btn" data-view="history">View all →</button>
+              </div>
+              <div class="recent" id="recentInvoices"></div>
+            </div>
+          </div>
+        </section>

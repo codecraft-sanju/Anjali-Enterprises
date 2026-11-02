@@ -1,0 +1,90 @@
+              <div
+                class="wizard-page"
+                data-step="3"
+                hidden=""
+                id="previewSection"
+              >
+                <div class="step-section-head">
+                  <span class="step-eyebrow"
+                    >STEP 04 / FINAL INVOICE PREVIEW</span
+                  >
+                  <h2>Everything looks good?</h2>
+                  <p>
+                    Review exactly what's in your invoice and the message that
+                    will open in WhatsApp.
+                  </p>
+                </div>
+                <div class="preview-columns">
+                  <div class="preview-invoice">
+                    <div class="preview-brand">
+                      <span class="preview-logo">AE</span>
+                      <div>
+                        <strong>ANJALI ENTERPRISES</strong
+                        ><small>Electrical Supply · Sales invoice</small>
+                      </div>
+                    </div>
+                    <div class="preview-meta">
+                      <div>
+                        <small>INVOICE NO.</small
+                        ><strong id="previewBillNo">DRAFT</strong>
+                      </div>
+                      <div>
+                        <small>DATE</small><strong id="previewDate">—</strong>
+                      </div>
+                    </div>
+                    <div class="preview-customer">
+                      <small>BILLED TO</small
+                      ><strong id="previewCustomer">Walk-in</strong
+                      ><span id="previewPhone">No contact number</span>
+                    </div>
+                    <div class="preview-items" id="previewItems"></div>
+                    <div class="preview-figures" id="previewFigures"></div>
+                    <div class="preview-notes hidden" id="previewNotesWrap">
+                      <small>BILL NOTES</small>
+                      <p id="previewNotes"></p>
+                    </div>
+                    <div class="preview-thanks">
+                      Thank you for your business.
+                    </div>
+                  </div>
+                  <div class="preview-message-side">
+                    <div class="message-head">
+                      <div class="whatsapp-avatar">
+                        <span data-icon="whatsapp"></span>
+                      </div>
+                      <div>
+                        <strong>WhatsApp message</strong>
+                        <p>Exact prefilled message · not sent automatically</p>
+                      </div>
+                    </div>
+                    <div class="chat-backdrop">
+                      <div class="chat-bubble">
+                        <pre id="whatsappPreviewText"></pre>
+                        <small
+                          >Ready to share
+                          <span aria-hidden="true">✓✓</span></small
+                        >
+                      </div>
+                    </div>
+                    <div class="message-tools">
+                      <button
+                        class="btn secondary btn-sm"
+                        data-action="copy-message"
+                        type="button"
+                      >
+                        <span data-icon="copy"></span>Copy message</button
+                      ><button
+                        class="btn secondary btn-sm"
+                        data-action="print-draft"
+                        type="button"
+                      >
+                        <span data-icon="printer"></span>Print / PDF
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <p class="preview-caution" id="previewNumberNote">
+                  For a new bill, the invoice number shown is provisional until
+                  saved. WhatsApp opens a draft; you choose when to send it.
+                </p>
+              </div>

@@ -1,0 +1,103 @@
+        <section class="screen" id="screen-invoice">
+          <div class="head invoice-heading">
+            <div>
+              <div class="eyebrow">INVOICE BUILDER · GUIDED BILLING</div>
+              <h1 id="invoiceHeading">Create a new bill</h1>
+              <p class="head-desc">
+                Four clear steps. One beautifully prepared invoice.
+              </p>
+            </div>
+            <div class="date-pill">
+              <span data-icon="calendar"></span
+              ><span class="today-label"></span>
+            </div>
+          </div>
+          <div class="wizard-shell">
+            <div class="wizard-overview">
+              <div class="wizard-overview-copy">
+                <span class="wizard-kicker">BILLING JOURNEY</span>
+                <h2 id="wizardHeading">Who are we billing?</h2>
+                <p id="wizardDescription">
+                  Start with your customer's details. Walk-in customers are
+                  welcome.
+                </p>
+              </div>
+              <div class="wizard-counter">
+                <strong id="stepCounter">01</strong><span> / 04</span>
+              </div>
+            </div>
+            <nav aria-label="Invoice creation steps" class="wizard-steps">
+              <button
+                aria-current="step"
+                class="wizard-step active"
+                data-jump-step="0"
+                type="button"
+              >
+                <span class="step-number">01</span
+                ><span class="step-copy"
+                  ><b>Customer</b><small>Customer details</small></span
+                >
+              </button>
+              <button class="wizard-step" data-jump-step="1" type="button">
+                <span class="step-number">02</span
+                ><span class="step-copy"
+                  ><b>Items</b><small>Product list</small></span
+                >
+              </button>
+              <button class="wizard-step" data-jump-step="2" type="button">
+                <span class="step-number">03</span
+                ><span class="step-copy"
+                  ><b>Payment</b><small>Totals &amp; dues</small></span
+                >
+              </button>
+              <button class="wizard-step" data-jump-step="3" type="button">
+                <span class="step-number">04</span
+                ><span class="step-copy"
+                  ><b>Preview</b><small>Review &amp; share</small></span
+                >
+              </button>
+            </nav>
+            <div aria-hidden="true" class="wizard-track">
+              <span id="wizardTrackFill"></span>
+            </div>
+            <div class="wizard-stage card" id="wizardStage">
+              <template data-part="./partials/invoice/customer.html"></template>
+              <template data-part="./partials/invoice/items.html"></template>
+              <template data-part="./partials/invoice/payment.html"></template>
+              <template data-part="./partials/invoice/preview.html"></template>
+            </div>
+            <div class="wizard-footer">
+              <button
+                class="btn secondary"
+                data-action="step-back"
+                id="wizardBack"
+                type="button"
+              >
+                <span data-icon="arrow-left"></span>Back
+              </button>
+              <div class="wizard-footer-tip" id="wizardFooterTip">
+                Step 1 of 4 · Your changes stay as you move between steps
+              </div>
+              <button
+                class="btn primary wizard-next"
+                data-action="step-next"
+                id="wizardNext"
+                type="button"
+              >
+                Continue to items <span data-icon="arrow-right"></span>
+              </button>
+              <div class="final-actions hidden" id="saveSection">
+                <button class="btn secondary" data-action="save" type="button">
+                  <span data-icon="save"></span>Save invoice
+                </button>
+                <button
+                  class="btn success"
+                  data-action="save-send"
+                  type="button"
+                >
+                  <span data-icon="whatsapp"></span>Save &amp; open WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>

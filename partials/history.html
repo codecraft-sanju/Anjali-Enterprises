@@ -1,0 +1,85 @@
+        <section class="screen" id="screen-history">
+          <div class="head">
+            <div>
+              <div class="eyebrow">SALES RECORDS</div>
+              <h1>Bill history &amp; payments</h1>
+              <p class="head-desc">
+                Find any invoice, settle dues, and keep a safe backup.
+              </p>
+            </div>
+            <div class="date-pill">
+              <span data-icon="history"></span
+              ><span id="historyCount">0 invoices</span>
+            </div>
+          </div>
+          <div class="history-toolbar">
+            <div class="search-wrap">
+              <span data-icon="search"></span
+              ><input
+                aria-label="Search bills"
+                class="search"
+                id="historySearch"
+                placeholder="Search customer, mobile or bill number..."
+                type="search"
+              />
+            </div>
+            <div aria-label="Status filter" class="filters">
+              <button class="filter active" data-filter="all">All bills</button
+              ><button class="filter" data-filter="pending">Pending</button
+              ><button class="filter" data-filter="paid">Paid</button>
+            </div>
+          </div>
+          <div class="history-actions" id="backupSection">
+            <select
+              aria-label="Date range"
+              class="range-select"
+              data-range="hist"
+            ></select
+            ><button class="btn secondary btn-sm" data-action="export-csv">
+              <span data-icon="download"></span>Export CSV (this range)</button
+            ><button class="btn secondary btn-sm" data-action="backup">
+              <span data-icon="database"></span>Backup JSON</button
+            ><button class="btn secondary btn-sm" data-action="restore">
+              <span data-icon="upload"></span>Restore</button
+            ><input
+              accept=".json,application/json"
+              class="hidden"
+              id="restoreFile"
+              type="file"
+            />
+          </div>
+          <div class="card" style="overflow: hidden">
+            <div
+              class="card-title"
+              style="
+                padding: 20px;
+                margin: 0;
+                border-bottom: 1px solid var(--line);
+              "
+            >
+              <h2>Invoices</h2>
+              <span class="muted tiny" id="filterCount"></span>
+            </div>
+            <div class="table-wrap">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Bill no.</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Pending</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+              </table>
+            </div>
+            <div class="mobile-bills" id="mobileBillList"></div>
+          </div>
+          <p class="muted tiny" style="margin-top: 15px">
+            Tip: Use the payment icon to record installments without changing
+            the original bill total.
+          </p>
+        </section>

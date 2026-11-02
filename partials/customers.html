@@ -1,0 +1,36 @@
+        <section class="screen" id="screen-customers">
+          <div class="head">
+            <div>
+              <div class="eyebrow">CUSTOMER KHATA</div>
+              <h1>Customer ledger</h1>
+              <p class="head-desc">
+                All bills of a mobile number combined — see exactly how much
+                each customer owes.
+              </p>
+            </div>
+            <div class="date-pill">
+              <span data-icon="users"></span
+              ><span id="customerCount">0 customers</span>
+            </div>
+          </div>
+          <div class="history-toolbar">
+            <div class="search-wrap">
+              <span data-icon="search"></span
+              ><input
+                aria-label="Search customers"
+                class="search"
+                id="customerSearch"
+                placeholder="Search name or mobile..."
+                type="search"
+              />
+            </div>
+            <div class="date-pill">
+              Total outstanding: <strong id="ledgerTotal">₹0.00</strong>
+            </div>
+          </div>
+          <div class="cust-list" id="customerList"></div>
+          <p class="muted tiny" style="margin-top: 15px">
+            Only bills with a mobile number are grouped here. Walk-in bills stay
+            in Bill History.
+          </p>
+        </section>

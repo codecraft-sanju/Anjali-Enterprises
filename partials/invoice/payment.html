@@ -1,0 +1,129 @@
+              <div
+                class="wizard-page"
+                data-step="2"
+                hidden=""
+                id="summarySection"
+              >
+                <div class="step-section-head">
+                  <span class="step-eyebrow">STEP 03 / PAYMENT SUMMARY</span>
+                  <h2>Almost done — review the numbers</h2>
+                  <p>
+                    Check your discount, GST and how much the customer has paid.
+                  </p>
+                </div>
+                <div class="payment-layout">
+                  <div class="payment-controls">
+                    <div class="payment-subtotal">
+                      <span>Items subtotal</span
+                      ><strong id="subtotalDisplay">₹0.00</strong>
+                    </div>
+                    <div class="grid2">
+                      <div class="field">
+                        <div class="label-split">
+                          <label for="discountValue" id="discountLabel"
+                            >Discount (%)</label
+                          >
+                          <div
+                            aria-label="Discount type"
+                            class="seg"
+                            role="group"
+                          >
+                            <button
+                              class="active"
+                              data-action="disc-type"
+                              data-type="pct"
+                              type="button"
+                            >
+                              %</button
+                            ><button
+                              data-action="disc-type"
+                              data-type="amt"
+                              type="button"
+                            >
+                              ₹
+                            </button>
+                          </div>
+                        </div>
+                        <input
+                          id="discountValue"
+                          inputmode="decimal"
+                          max="100"
+                          min="0"
+                          step="0.01"
+                          type="number"
+                          value="0"
+                        />
+                      </div>
+                      <div class="field">
+                        <label for="globalGst"
+                          >Bill-wide GST (%)
+                          <span class="optional"
+                            >On discounted subtotal</span
+                          ></label
+                        ><input
+                          id="globalGst"
+                          inputmode="decimal"
+                          max="100"
+                          min="0"
+                          step="0.01"
+                          type="number"
+                          value="0"
+                        />
+                      </div>
+                    </div>
+                    <div class="field amount-field">
+                      <div class="label-split">
+                        <label for="amountReceived">Amount received (₹)</label
+                        ><button
+                          class="link-btn"
+                          data-action="full-paid"
+                          type="button"
+                        >
+                          Mark fully paid
+                        </button>
+                      </div>
+                      <input
+                        id="amountReceived"
+                        inputmode="decimal"
+                        min="0"
+                        step="0.01"
+                        type="number"
+                        value="0"
+                      />
+                    </div>
+                    <div class="step-helper tip-payment">
+                      <span data-icon="wallet"></span>
+                      <div>
+                        <strong>Partial payment supported</strong>
+                        <p>
+                          You can collect the remaining amount later from Bill
+                          History or Customer Khata.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <aside class="payment-receipt">
+                    <span class="receipt-label">PAYMENT BREAKDOWN</span>
+                    <div class="summary-line">
+                      <span>Subtotal</span
+                      ><strong id="receiptSubtotalDisplay">₹0.00</strong>
+                    </div>
+                    <div class="summary-line green">
+                      <span>Discount</span
+                      ><strong id="discountDisplay">−₹0.00</strong>
+                    </div>
+                    <div class="summary-line">
+                      <span>Total GST</span
+                      ><strong id="gstDisplay">+₹0.00</strong>
+                    </div>
+                    <div class="summary-total">
+                      <span>GRAND TOTAL</span
+                      ><strong id="grandDisplay">₹0.00</strong>
+                    </div>
+                    <div class="balance">
+                      <span>Balance pending</span
+                      ><strong id="pendingDisplay">₹0.00</strong>
+                    </div>
+                  </aside>
+                </div>
+              </div>

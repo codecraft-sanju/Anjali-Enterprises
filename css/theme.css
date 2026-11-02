@@ -1,0 +1,59 @@
+/* -------- Refined light interface -------- */
+:root {
+  --bg: #f6f7fc;
+  --ink: #18213b;
+  --primary: #5149e9;
+  --pale: #f0efff;
+  --line: #e7eaf2;
+  --r: 20px;
+  --shadow: 0 14px 46px rgba(31, 41, 78, 0.045);
+}
+body {
+  background:
+    radial-gradient(
+      ellipse 60% 460px at 50% -180px,
+      rgba(107, 103, 255, 0.1),
+      transparent
+    ),
+    var(--bg);
+}
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s,
+    background 0.2s,
+    border-color 0.2s;
+}
+.btn:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.16) 51%,
+    transparent 70%
+  );
+  transform: translateX(-160%);
+  pointer-events: none;
+}
+.btn:not(:disabled):hover::after {
+  animation: button-shimmer 0.65s ease-out;
+}
+.btn:not(:disabled):active {
+  transform: translateY(0) scale(0.975);
+}
+.btn.success {
+  background: #0c886a;
+  box-shadow: 0 9px 18px #0c886a26;
+}
+.btn.success:hover {
+  background: #08775c;
+  box-shadow: 0 13px 26px #0c886a36;
+}
+.screen.active {
+  animation: page-enter 0.42s var(--ease) both;
+}

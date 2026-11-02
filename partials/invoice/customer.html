@@ -1,0 +1,63 @@
+              <div
+                class="wizard-page active"
+                data-step="0"
+                id="customerSection"
+              >
+                <div class="step-section-head">
+                  <span class="step-eyebrow">STEP 01 / CUSTOMER DETAILS</span>
+                  <h2>Let's start with your customer</h2>
+                  <p>
+                    Add the recipient's contact details, or leave the name blank
+                    for a walk-in invoice.
+                  </p>
+                </div>
+                <div class="grid2 wizard-fields">
+                  <div class="field">
+                    <label for="customerName"
+                      >Customer name
+                      <span class="optional">Optional</span></label
+                    ><input
+                      autocomplete="name"
+                      id="customerName"
+                      maxlength="80"
+                      placeholder="e.g. Rahul Sharma"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="customerPhone"
+                      >WhatsApp / mobile
+                      <span class="optional">Optional to save</span></label
+                    ><input
+                      autocomplete="tel-national"
+                      id="customerPhone"
+                      inputmode="numeric"
+                      maxlength="15"
+                      placeholder="10-digit mobile number"
+                      type="tel"
+                    />
+                    <p class="hint">
+                      Required only for sharing on WhatsApp. Indian numbers
+                      (+91) supported.
+                    </p>
+                  </div>
+                </div>
+                <div class="step-helper">
+                  <span data-icon="users"></span>
+                  <div>
+                    <strong>Walk-in customer?</strong>
+                    <p>
+                      You can create and print bills without a mobile number.
+                      WhatsApp sharing needs a valid number.
+                    </p>
+                  </div>
+                </div>
+                <span class="edit-pill hidden" id="editingTag"
+                  >Editing an existing invoice</span
+                >
+                <div class="sr-only">
+                  <span id="editorTitle">Invoice details</span
+                  ><span id="editorSubtitle"
+                    >New sales invoice · ready to create</span
+                  >
+                </div>
+              </div>

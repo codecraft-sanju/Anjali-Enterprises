@@ -1,0 +1,50 @@
+    <dialog aria-labelledby="dialogTitle" id="paymentDialog">
+      <form id="paymentForm" novalidate="">
+        <div class="dialog-head">
+          <h2 id="dialogTitle">Record payment</h2>
+          <button
+            aria-label="Close"
+            class="icon-btn"
+            data-action="close-dialog"
+            type="button"
+          >
+            <span data-icon="x"></span>
+          </button>
+        </div>
+        <div class="dialog-body">
+          <div class="dialog-stat">
+            <strong id="dialogCustomer"></strong>
+            <div class="muted tiny" id="dialogPending"></div>
+          </div>
+          <div class="field">
+            <label for="collectAmount">Amount received (₹)</label
+            ><input
+              id="collectAmount"
+              inputmode="decimal"
+              min="0.01"
+              required=""
+              step="0.01"
+              type="number"
+            />
+          </div>
+          <div class="field" style="margin-top: 14px">
+            <label for="collectMethod">Payment method</label
+            ><select id="collectMethod">
+              <option>Cash</option>
+              <option>UPI</option>
+              <option>Bank transfer</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button
+            class="btn secondary"
+            data-action="close-dialog"
+            type="button"
+          >
+            Cancel</button
+          ><button class="btn primary" type="submit">Record payment</button>
+        </div>
+      </form>
+    </dialog>

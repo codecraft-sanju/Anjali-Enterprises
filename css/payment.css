@@ -1,0 +1,94 @@
+.payment-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 28px;
+  align-items: start;
+}
+.payment-controls {
+  min-width: 0;
+}
+.payment-subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 18px;
+  background: #f7f8fd;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  margin-bottom: 22px;
+  color: var(--secondary);
+  font-weight: 700;
+}
+.payment-subtotal strong {
+  font: 800 20px Manrope;
+  color: var(--ink);
+}
+.payment-layout .grid2 {
+  gap: 14px;
+}
+.label-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 27px;
+  margin-bottom: 7px;
+}
+.label-split label {
+  margin: 0 !important;
+}
+.amount-field {
+  margin-top: 25px;
+}
+.amount-field input {
+  min-height: 51px;
+  font-size: 17px;
+  font-weight: 800;
+}
+.tip-payment {
+  margin-top: 22px;
+  padding: 13px 15px;
+}
+.payment-receipt {
+  padding: 24px;
+  background: #fbfbff;
+  border: 1px solid #e6e5ff;
+  border-radius: 18px;
+}
+.payment-receipt .summary-line {
+  margin: 15px 0;
+}
+.payment-receipt .summary-total {
+  margin: 23px 0 12px;
+}
+.payment-receipt .balance {
+  margin: 17px 0 0;
+}
+.wizard-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 21px;
+  min-height: 77px;
+}
+.wizard-footer .btn {
+  min-height: 49px;
+}
+.wizard-footer-tip {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  color: #98a3b5;
+}
+.wizard-next {
+  min-width: 194px;
+}
+.final-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.final-actions .btn {
+  min-height: 49px;
+}
